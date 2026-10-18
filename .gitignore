@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+.claude/
+.codex/
+.local-backups/
+.~lock.*#
+~$*
+.DS_Store

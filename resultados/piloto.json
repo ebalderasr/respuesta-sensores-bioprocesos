@@ -1,0 +1,95 @@
+{
+  "archivo": "B2 Respuesta electrodos.xlsx",
+  "base_tiempo": "ProcessTime relativo, en segundos",
+  "calidad": {
+    "pH": {
+      "filas": 8432,
+      "intervalo_mediano_s": 1.0099999999979445,
+      "intervalo_maximo_s": 17.019999999971333,
+      "marcas_reloj_duplicadas": 1,
+      "faltantes_pH": 15,
+      "faltantes_OD": 15,
+      "posibles_artefactos": 5,
+      "duracion_s": 8535.320000000005
+    },
+    "OD": {
+      "filas": 1156,
+      "intervalo_mediano_s": 1.0099999999998062,
+      "intervalo_maximo_s": 1.0299999999997453,
+      "marcas_reloj_duplicadas": 1,
+      "faltantes_pH": 0,
+      "faltantes_OD": 0,
+      "posibles_artefactos": 0,
+      "duracion_s": 1164.989999999999
+    }
+  },
+  "criterio": "Banda ±5 % del cambio; permanencia ≥30 s y hasta fin de ventana; sin huecos >3 s.",
+  "ventanas": [
+    {
+      "id": "pH_descenso_2",
+      "hoja": "pH",
+      "senal": "pH",
+      "titulo": "pH: segundo descenso (origen inferido)",
+      "ventana_s": [
+        1140,
+        1710
+      ],
+      "t0_inferido_s": 1204.15,
+      "nivel_inicial_s": [
+        1140,
+        1200
+      ],
+      "nivel_final_s": [
+        1640,
+        1700
+      ],
+      "interpretacion": "Cambio visible hacia pH ácido; identidad y pH nominal de los buffers no registrados.",
+      "nivel_inicial_mediana": 6.887,
+      "nivel_final_mediana": 3.47,
+      "pendiente_final_unidades_min": -0.01631801453138012,
+      "rango_final_unidades": 0.016000000000000014,
+      "t10_aparente_s": 0.24491735537278936,
+      "t63_aparente_s": 4.03950054764509,
+      "t90_aparente_s": 50.832499999999214,
+      "t10_90_s": 50.58758264462642,
+      "t_estabilizacion_aparente_s": 149.2200000000007,
+      "semibanda_unidades_senal": 0.17084999999999997,
+      "permanencia_minima_s": 30,
+      "duracion_observada_desde_t0_s": 505.3600000000017,
+      "advertencia": "Origen inferido de la señal; valores aparentes, no tiempos certificados del sensor."
+    },
+    {
+      "id": "OD_transicion_final",
+      "hoja": "OD",
+      "senal": "OD",
+      "titulo": "O₂: transición final ascendente (origen inferido)",
+      "ventana_s": [
+        790,
+        1164
+      ],
+      "t0_inferido_s": 836.25,
+      "nivel_inicial_s": [
+        805,
+        835
+      ],
+      "nivel_final_s": [
+        1000,
+        1160
+      ],
+      "interpretacion": "Compatible con pasar de un medio de O₂ bajo a otro de O₂ mayor. N₂ conseguido al final según relato; el archivo no marca gases ni transferencias.",
+      "nivel_inicial_mediana": 12.64,
+      "nivel_final_mediana": 77.22,
+      "pendiente_final_unidades_min": -0.7975845504619896,
+      "rango_final_unidades": 5.099999999999994,
+      "t10_aparente_s": 1.2778253079506838,
+      "t63_aparente_s": 4.396345417057204,
+      "t90_aparente_s": 8.306609137056208,
+      "t10_90_s": 7.0287838291055245,
+      "t_estabilizacion_aparente_s": 40.46999999999912,
+      "semibanda_unidades_senal": 3.229,
+      "permanencia_minima_s": 30,
+      "duracion_observada_desde_t0_s": 327.4600000000012,
+      "advertencia": "Origen inferido de la señal; valores aparentes, no tiempos certificados del sensor."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "pH_descenso_2",
+    "hoja": "pH",
+    "senal": "pH",
+    "titulo": "pH: segundo descenso (origen inferido)",
+    "ventana_s": [1140, 1710],
+    "t0_inferido_s": 1204.15,
+    "nivel_inicial_s": [1140, 1200],
+    "nivel_final_s": [1640, 1700],
+    "interpretacion": "Cambio visible hacia pH ácido; identidad y pH nominal de los buffers no registrados."
+  },
+  {
+    "id": "OD_transicion_final",
+    "hoja": "OD",
+    "senal": "OD",
+    "titulo": "O₂: transición final ascendente (origen inferido)",
+    "ventana_s": [790, 1164],
+    "t0_inferido_s": 836.25,
+    "nivel_inicial_s": [805, 835],
+    "nivel_final_s": [1000, 1160],
+    "interpretacion": "Compatible con pasar de un medio de O₂ bajo a otro de O₂ mayor. N₂ conseguido al final según relato; el archivo no marca gases ni transferencias."
+  }
+]
