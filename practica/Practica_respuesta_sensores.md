@@ -46,6 +46,8 @@ También calcularemos **t₁₀–₉₀ = t₉₀ − t₁₀**: cuánto tarda 
 
 La figura es ilustrativa, no una medición de las sondas del taller. Para calcular los tiempos no necesitamos ajustar una ecuación exponencial ni resolver derivadas.
 
+El 63.2 % nos interesa porque, en un modelo de primer orden, corresponde a una constante de tiempo (τ), que resume la rapidez de la respuesta. Una τ menor indica una respuesta más rápida; el 90 % se alcanza aproximadamente en 2.3 τ. Estas relaciones son aproximadas para una sonda real y, si hay un retraso inicial, se aplican después de descontarlo.
+
 ## La cuenta necesaria: una fracción del cambio
 
 Llamaremos **y₀** a la lectura estable antes de transferir, **y_f** a la lectura final estable y **t₀** al instante en que la parte sensible queda sumergida en el líquido de destino. El tiempo transcurrido se cuenta desde t₀, no desde que empieza a moverse la pantalla.
