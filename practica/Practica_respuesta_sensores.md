@@ -1,6 +1,6 @@
 ---
 title: "Tiempo de respuesta de los sensores de pH y oxígeno disuelto"
-autor: "Emiliano Balderas · Instituto de Biotecnología, UNAM"
+autor: "Octavio T. Ramírez · Emiliano Balderas · Instituto de Biotecnología, UNAM"
 ---
 
 **Taller:** Caracterización de sensores para bioprocesos
@@ -9,9 +9,7 @@ autor: "Emiliano Balderas · Instituto de Biotecnología, UNAM"
 
 **Equipo:** sondas conectadas a Biostat, dos buffers de pH y dos soluciones con diferente contenido de oxígeno.
 
-Material para el **SLATCC**: [www.slatcc.com](https://www.slatcc.com/).
-
-# 1. Medir también toma tiempo
+# 1. Respuesta dinámica de los sensores
 
 En un cultivo, el pH y el oxígeno disuelto influyen en el entorno de las células. Para conocerlos usamos sensores, pero su lectura no cambia de manera instantánea cuando cambia el medio. La sonda necesita tiempo para responder y el equipo puede añadir procesamiento o filtrado a la señal.
 
@@ -19,18 +17,34 @@ Imagina que el oxígeno disminuye rápidamente: durante unos segundos, la pantal
 
 **Calibrar y medir el tiempo de respuesta son tareas distintas.** La calibración relaciona la señal con valores conocidos. La prueba de respuesta observa cuánto tarda la lectura en reflejar un cambio. Una sonda puede estar calibrada y responder lentamente.
 
-# 2. ¿Qué cambiaremos y qué observaremos?
+# 2. Condiciones de ensayo y variables registradas
 
 Mantendremos dos ambientes preparados y moveremos la sonda rápidamente de uno a otro. La transferencia debe ser breve, pero cuidadosa: “de golpe” significa cambiar el medio en poco tiempo, no golpear el sensor.
 
 | Sensor | Medio inicial y final | Señal que registramos |
 |---|---|---|
-| pH | Buffer **pH 8 → pH 3**, después **pH 3 → pH 8** | pH indicado por Biostat |
+| pH | Buffer **pH 3 → pH 10**, después **pH 10 → pH 3** | pH indicado por Biostat |
 | Oxígeno disuelto (O₂, OD o pO₂) | Agua equilibrada con **aire → agua con N₂**, después el sentido inverso | Oxígeno en % de saturación indicado por Biostat |
 
 En pH medimos la respuesta de un electrodo. En oxígeno puede haber una sonda electroquímica u óptica: **primero registraremos su identificación y no supondremos su tecnología**. Biostat es el equipo que recibe y muestra la señal; no necesariamente es el fabricante de la sonda.
 
-# 3. Tres formas de describir la respuesta
+## Principios de medición y factores de respuesta
+
+El electrodo de pH es habitualmente un electrodo combinado de vidrio con referencia. Su respuesta depende de la hidratación de la membrana de vidrio, del estado de la unión de referencia, de la temperatura y de la composición de la solución. Los sensores ópticos de O₂ usan luminiscencia; los electroquímicos consumen oxígeno en su superficie. Su respuesta depende del diseño, de la membrana cuando existe, de la temperatura, del movimiento del líquido y del estado del sensor.
+
+| Aspecto | Sensor de O₂ | Electrodo de pH |
+|---|---|---|
+| Cambio aplicado | Entre medios con distinto contenido de O₂ | Entre buffers de distinto pH |
+| Factores de la respuesta | Sensor, transporte local de oxígeno y mezcla | Membrana de vidrio, referencia y acondicionamiento |
+| Consecuencia de una lectura lenta | Retraso en detectar caídas de O₂ y corregir aireación, agitación u oxígeno | Retraso en detectar cambios de pH y corregir con ácido o base |
+
+La prueba caracteriza la respuesta operacional del sistema de medición: sonda, transmisor y adquisición bajo las condiciones del ensayo. La transferencia y la mezcla local también pueden afectar la curva observada. No se requieren células para realizarla.
+
+![Sonda de oxígeno disuelto](../figuras/sensor_OD_OTR.jpeg){width=6cm} ![Electrodo de pH](../figuras/sensor_pH_OTR.jpeg){width=6cm}
+
+Sonda de oxígeno disuelto (izquierda) y electrodo de pH (derecha). Imágenes de la versión de OTR; se muestran como referencia de los sensores, sin identificar los utilizados en el taller.
+
+# 3. Parámetros de respuesta
 
 No siempre hay un instante único en que la señal “termina de cambiar”. Por eso acordaremos qué vamos a medir.
 
@@ -46,9 +60,7 @@ También calcularemos **t₁₀–₉₀ = t₉₀ − t₁₀**: cuánto tarda 
 
 La figura es ilustrativa, no una medición de las sondas del taller. Para calcular los tiempos no necesitamos ajustar una ecuación exponencial ni resolver derivadas.
 
-El 63.2 % nos interesa porque, en un modelo de primer orden, corresponde a una constante de tiempo (τ), que resume la rapidez de la respuesta. Una τ menor indica una respuesta más rápida; el 90 % se alcanza aproximadamente en 2.3 τ. Estas relaciones son aproximadas para una sonda real y, si hay un retraso inicial, se aplican después de descontarlo.
-
-## La cuenta necesaria: una fracción del cambio
+## Cálculo de los umbrales de respuesta
 
 Llamaremos **y₀** a la lectura estable antes de transferir, **y_f** a la lectura final estable y **t₀** al instante en que la parte sensible queda sumergida en el líquido de destino. El tiempo transcurrido se cuenta desde t₀, no desde que empieza a moverse la pantalla.
 
@@ -58,13 +70,50 @@ Para el 10 % se hace la misma cuenta sustituyendo 0.90 por 0.10. La resta $y_f-y
 
 | Ejemplo didáctico | Cambio | Nivel al 10 % | Nivel al 90 % |
 |---|---|---|---|
-| pH: 8 a 3 | 3 − 8 = −5 | 8 − 0.5 = **7.5** | 8 − 4.5 = **3.5** |
-| pH: 3 a 8 | 8 − 3 = 5 | **3.5** | **7.5** |
+| pH: 3 a 10 | 10 − 3 = 7 | 3 + 0.7 = **3.7** | 3 + 6.3 = **9.3** |
+| pH: 10 a 3 | 3 − 10 = −7 | **9.3** | **3.7** |
 | O₂: 100 a 0 % | 0 − 100 = −100 puntos | **90 % de saturación** | **10 % de saturación** |
 
 **Atención:** recorrer el 90 % de un descenso de oxígeno no significa llegar a 90 % de saturación. Usa las lecturas estables observadas: si los extremos son 80 y 12 %, el nivel al 90 % es $80 + 0.90(12-80) = 18.8$ % de saturación.
 
 El pH es una escala logarítmica. Aquí describimos el porcentaje del recorrido de la **lectura de pH**, no el porcentaje de cambio de la concentración de iones hidrógeno.
+
+## Modelo de primer orden y constante de tiempo
+
+Muchos sensores pueden aproximarse mediante un modelo de primer orden. Para un cambio súbito del medio y sin retraso puro, la ecuación es:
+
+$$\tau\,\frac{dy}{dt}+y=y_f,\qquad y(t_0)=y_0$$
+
+Es una ecuación diferencial de primer orden porque contiene la primera derivada de la lectura respecto al tiempo, $dy/dt$, y ninguna derivada de orden superior. La derivada expresa la rapidez con que cambia la lectura. La ecuación dice que esa rapidez es proporcional a lo que aún falta para llegar al valor final: $dy/dt=(y_f-y)/\tau$.
+
+τ (tau) es la constante de tiempo, con unidades de tiempo, por ejemplo segundos. Una τ menor corresponde a una respuesta más rápida. Si el medio permanece en su nuevo valor, la solución de esta ecuación es:
+
+$$y(t)=y_0+(y_f-y_0)\left[1-e^{-(t-t_0)/\tau}\right],\qquad t\geq t_0$$
+
+Aquí $e\approx2.71828$ es la base de la función exponencial. Para comparar ascensos y descensos, expresamos la respuesta como fracción del cambio total, siempre que $y_f\ne y_0$:
+
+$$r(t)=\frac{y(t)-y_0}{y_f-y_0}=1-e^{-(t-t_0)/\tau}$$
+
+Al transcurrir una constante de tiempo desde el cambio, $t-t_0=\tau$, el exponente vale −1:
+
+$$r(t_0+\tau)=1-e^{-1}=1-0.367879\ldots=0.632121\ldots\approx63.2\,\%$$
+
+Así, después de una τ se ha recorrido aproximadamente el 63.2 % del cambio y falta el 36.8 %. El nivel correspondiente en la gráfica es $y_{63.2}=y_0+0.632\,(y_f-y_0)$.
+
+Para saber cuánto tarda el modelo en completar cualquier fracción $p$ del cambio, despejamos el tiempo:
+
+$$p=1-e^{-t_p/\tau}\quad\Longrightarrow\quad t_p=-\tau\ln(1-p)$$
+
+En esta expresión, $t_p$ es el tiempo transcurrido desde t₀ y $\ln$ es el logaritmo natural. Para el 90 %, $p=0.90$ y queda $t_{90}=-\tau\ln(0.10)\approx2.303\,\tau$.
+
+| Porcentaje del cambio | Tiempo transcurrido en el modelo de primer orden |
+|---|---|
+| 63.2 % (aproximadamente) | τ |
+| 90 % | 2.303 τ |
+| 95 % | 2.996 τ ≈ 3 τ |
+| 99 % | 4.605 τ |
+
+Estas relaciones suponen una respuesta exponencial de primer orden. Una sonda real puede presentar retraso inicial, varias constantes de tiempo, oscilaciones o filtrado adicional. Si existe un retraso puro $L$ antes de comenzar la respuesta exponencial, los tiempos contados desde t₀ son $t_{63.2}\approx L+\tau$ y $t_{90}\approx L+2.303\,\tau$. Por ello, identificar el t₆₃.₂ observado con τ o calcular τ = t₉₀/2.303 requiere comprobar el modelo y el retraso. En el taller, t₉₀ se obtiene directamente de la curva; no se exige ajustar este modelo.
 
 ## Banda de estabilización
 
@@ -72,15 +121,17 @@ Usaremos una banda de **±5 % del cambio total** alrededor de y_f:
 
 $$b = 0.05\,|y_f-y_0|\qquad\text{banda: de }y_f-b\text{ a }y_f+b$$
 
-Las barras indican tomar el tamaño del cambio sin su signo. Para una lectura de pH de 8 a 3, b = 0.25 unidades y la banda es 2.75–3.25. Para oxígeno de 80 a 12 %, b = 3.4 puntos y la banda es 8.6–15.4 % de saturación.
+Las barras indican tomar el tamaño del cambio sin su signo. Para una lectura de pH de 3 a 10, b = 0.35 unidades y la banda es 9.65–10.35. Para oxígeno de 80 a 12 %, b = 3.4 puntos y la banda es 8.6–15.4 % de saturación.
 
 Esta banda es un criterio didáctico común para comparar ensayos; no es un criterio universal del fabricante. **Entrar una vez no basta:** si sale de la banda después, buscar una entrada posterior. Si no permanece dentro, escribir “no se estabilizó durante el tiempo observado”.
 
 # 4. Objetivo y organización
 
+Al finalizar, los participantes podrán definir t₉₀ y τ, explicar el origen del 63.2 % en un modelo de primer orden, distinguir la respuesta de la sonda de la del sistema completo y relacionar una lectura lenta con el control del cultivo.
+
 **Objetivo:** identificar las sondas utilizadas y determinar t₁₀, t₉₀ y el tiempo de estabilización de las lecturas de pH y O₂, en ambos sentidos de transferencia. Comparar los resultados considerando temperatura, agitación, registro y condiciones de cada ensayo.
 
-Cada uno de los tres equipos realiza las dos pruebas. Las seis personas se reparten estos roles:
+Cada uno de los tres equipos realiza las dos pruebas. Al cambiar de sensor, intercambiar los roles para que todos participen en la operación y el análisis. Las seis personas se reparten estos roles:
 
 1. **Identificación y trazabilidad:** lee etiquetas y llena la ficha de sensores, soluciones y condiciones.
 2. **Operación:** transfiere la sonda con ayuda del instructor, sin desconectarla.
@@ -93,13 +144,13 @@ Cada uno de los tres equipos realiza las dos pruebas. Las seis personas se repar
 
 ![Dos medios preparados para cada sensor; la sonda se transfiere manteniendo su conexión](../figuras/00_montaje.png)
 
-## Para pH
+## Montaje para pH
 
-Dos vasos identificados con **buffer pH 8** y **buffer pH 3**, a temperatura semejante y con agitación magnética suave y reproducible. Registrar el valor nominal, temperatura de referencia, lote o identificación y temperatura de uso. Usar volumen suficiente para cubrir la parte sensible y la unión de referencia, según la sonda.
+Dos vasos identificados con **buffer pH 3** y **buffer pH 10**, a temperatura semejante y con agitación magnética suave y reproducible. Registrar el valor nominal, temperatura de referencia, lote o identificación y temperatura de uso. Usar volumen suficiente para cubrir la parte sensible y la unión de referencia, según la sonda.
 
 Mantener los buffers separados y usar alícuotas frescas y volumen suficiente para reducir contaminación por arrastre. Antes de establecer la lectura inicial, acondicionar o enjuagar la sonda según su manual. **Durante la transferencia cronometrada no hacer un enjuague intermedio:** podría iniciar la respuesta antes del contacto con el vaso de destino. Dejar escurrir brevemente, sin frotar ni secar el bulbo, y transferir directamente con la misma técnica en ambos sentidos. Registrar el tiempo fuera de los vasos. La película de líquido arrastrada forma parte de las limitaciones del ensayo.
 
-## Para O₂
+## Montaje para O₂
 
 Dos vasos con agua de la misma procedencia y a temperatura semejante. **Cada vaso debe tener agitación magnética y burbujeo continuo:** uno con aire y otro con nitrógeno (N₂). Prepararlos antes de que llegue el equipo. Mantener condiciones constantes durante los ensayos y registrar caudal si puede medirse, o ajuste y tipo de burbujeo si no.
 
@@ -117,7 +168,7 @@ Desactivar con el instructor cualquier actuación automática ligada a las sonda
 
 Usar adquisición digital con el menor intervalo disponible, **idealmente 1 s o menos**, y confirmar el intervalo real al exportar. Una respuesta de pocos segundos no puede resolverse bien con lecturas cada 10 s. La hoja manual sirve de respaldo, no sustituye un registro rápido.
 
-# 6. Identificar las sondas es parte de la práctica
+# 6. Identificación de las sondas
 
 Antes de transferir, el equipo localiza las etiquetas, las compara con el canal de pantalla y llena la ficha de la sección 9. **No desconectar ni desmontar la sonda para buscar datos.** Si la etiqueta no es accesible, consultar la documentación disponible o al instructor y anotar su origen.
 
@@ -131,13 +182,13 @@ Esta información es parte del resultado: dos sensores con la misma variable med
 |---|---|
 | 0–5 | Explicación de las medidas y reparto de roles. |
 | 5–9 | Identificar ambas sondas, llenar sus fichas y verificar registro, soluciones y temperatura. |
-| 9–20 | pH: lectura inicial en pH 8, transferencia a pH 3 y regreso a pH 8. Marcar t₀ en cada transferencia. |
+| 9–20 | pH: lectura inicial en pH 3, transferencia a pH 10 y regreso a pH 3. Marcar t₀ en cada transferencia. |
 | 20–22 | Comprobar los dos medios de O₂ y las condiciones de agitación y burbujeo. |
 | 22–33 | O₂: aire → N₂ y N₂ → aire. Marcar t₀ y registrar cada transición. |
 | 33–41 | Obtener niveles, calcular umbrales y leer tiempos en las gráficas. |
 | 41–45 | Completar resultados, discutir límites y entregar el montaje al instructor. |
 
-## Pasos que se repiten en cada transferencia
+## Procedimiento de transferencia y registro
 
 1. **Antes:** registrar una meseta inicial durante al menos 30 s. Como comprobación operativa, buscar un rango máximo de 0.05 unidades de pH o 2 puntos de O₂ en esos 30 s, sin tendencia evidente. Si no se cumple, estabilizar el montaje; son criterios del taller, no especificaciones de la sonda.
 2. **Transferir:** mantener la conexión y minimizar el tránsito, sin un enjuague intermedio en el ensayo cronometrado. El cronometrista marca t₀ al completar la inmersión de la parte sensible en el destino. Registrar duración de transferencia y cualquier incidente.
@@ -148,15 +199,34 @@ Esta información es parte del resultado: dos sensores con la misma variable med
 
 Si faltan mesetas, no fijar un y_f arbitrario. Registrar **“ensayo incompleto: no hay meseta final”** y la duración observada; no calcular t₉₀ usando la última lectura como si fuera el equilibrio. Si falta tiempo, trabajar el cálculo con el ejemplo o con el piloto, identificando la procedencia. No sustituir una dirección no ensayada por la otra.
 
+## Cálculo de t₉₀ por interpolación lineal
+
+Si el umbral $y_{90}$ queda entre dos lecturas consecutivas $y_1$ y $y_2$, tomadas a las horas $T_1$ y $T_2$ del archivo, podemos estimar la hora del cruce y restar la hora de inmersión:
+
+$$T_{90}=T_1+\frac{y_{90}-y_1}{y_2-y_1}(T_2-T_1),\qquad t_{90}=T_{90}-t_0$$
+
+Usar tiempos en una misma unidad, por ejemplo segundos desde el comienzo del archivo. La fórmula funciona al subir y al bajar, con $y_1\ne y_2$ y un umbral comprendido entre ambas lecturas. Elegir el primer cruce tras t₀; no interpolar sobre datos faltantes ni huecos del registro.
+
+**Ejemplo de O₂ ascendente:** si las mesetas son 10 y 90 % de saturación, $y_{90}=10+0.90(90-10)=82$ %. Si a los 7 y 8 s desde t₀ se leen 80 y 84 %, el cruce estimado es $7+(82-80)/(84-80)=7.5$ s. El umbral es 82 % de saturación y t₉₀ es 7.5 s.
+
+La interpolación permite estimar entre muestras; no mejora la exactitud del reloj ni sustituye una adquisición rápida. Indicar que se interpoló y conservar el intervalo entre muestras que encierra el cruce.
+
 # 8. Comparación y discusión
+
+En un cultivo celular, una sonda lenta entrega información atrasada al controlador. Si el ajuste del control es agresivo, ese retraso puede contribuir a oscilaciones. El tiempo de respuesta del lazo completo incluye además al controlador, las válvulas, las bombas y la dinámica del biorreactor; no equivale al t₉₀ medido aquí.
 
 1. ¿Qué identificadores permiten reconocer cada sonda? ¿Qué información quedó pendiente y cómo podría verificarse?
 2. ¿La primera señal de cambio, t₉₀ y la estabilización dieron el mismo tiempo? ¿Por qué pueden diferir?
-3. ¿Fue igual ir de pH 8 a 3 que regresar? ¿Qué efecto pudieron tener el arrastre, el acondicionamiento y la temperatura?
+3. ¿Fue igual ir de pH 3 a 10 que regresar? ¿Qué efecto pudieron tener el arrastre, el acondicionamiento y la temperatura?
 4. ¿Por qué cambiar el gas en un mismo vaso no equivale a transferir entre dos medios preequilibrados?
 5. ¿Qué parte de la respuesta puede venir de la sonda, del líquido, del tránsito y del filtrado de Biostat?
 6. Si el registro es cada 1 s y una transición dura unos 8 s, ¿cuántos puntos la describen? ¿Qué pasaría al registrar cada 10 s?
 7. ¿Se puede concluir que una sonda es mejor solo por ser más rápida? Considerar estabilidad, exactitud y aplicación.
+8. ¿Por qué aparece el 63.2 % al transcurrir una τ? ¿En qué condiciones t₉₀ ≈ 2.303 τ?
+9. ¿Qué consecuencias tendría una sonda de O₂ lenta en un cultivo CHO de alta densidad celular?
+10. ¿Qué diferencia hay entre rapidez de respuesta, exactitud, precisión y estabilidad?
+
+**Entrega:** cada equipo presenta los t₉₀ de pH y O₂ en las direcciones ensayadas, explica cómo calculó los umbrales y los tiempos, y documenta los ensayos incompletos. Cada participante debe poder explicar una consecuencia de una lectura lenta de cada sensor. Completar también t₁₀, t₁₀–₉₀ y estabilización en la hoja de datos cuando el registro lo permita.
 
 # 9. Hoja de datos
 
@@ -183,16 +253,16 @@ Si faltan mesetas, no fijar un y_f arbitrario. Registrar **“ensayo incompleto:
 
 | Medio | Identificación/lote | Valor nominal o gas | Temperatura [°C] | Agitación y caudal/ajuste |
 |---|---|---|---|---|
-| Buffer A | | pH 8 | | |
-| Buffer B | | pH 3 | | |
+| Buffer A | | pH 3 | | |
+| Buffer B | | pH 10 | | |
 | Agua con aire | | Aire | | |
 | Agua con N₂ | | N₂ | | |
 
 **Acondicionamiento previo y técnica de transferencia de pH:** ______  **Observaciones del montaje:** ______
 
-## Un registro por transferencia
+## Registro individual de transferencia
 
-Copiar o imprimir este bloque cuatro veces: pH 8 → 3, pH 3 → 8, O₂ aire → N₂ y O₂ N₂ → aire.
+Copiar o imprimir este bloque cuatro veces: pH 3 → 10, pH 10 → 3, O₂ aire → N₂ y O₂ N₂ → aire.
 
 **ID de sonda:** ______  **Dirección:** ______  **t₀ (hora del archivo):** ______
 
@@ -220,77 +290,14 @@ Esta tabla resume puntos del registro; conservar el archivo digital completo. An
 
 | Ensayo e ID de sonda | t₁₀ [s] | t₉₀ [s] | t₁₀–₉₀ [s] | Estabilización [s] o motivo de no cálculo |
 |---|---|---|---|---|
-| pH 8 → 3 / ID: ______ | | | | |
-| pH 3 → 8 / ID: ______ | | | | |
+| pH 3 → 10 / ID: ______ | | | | |
+| pH 10 → 3 / ID: ______ | | | | |
 | O₂ aire → N₂ / ID: ______ | | | | |
 | O₂ N₂ → aire / ID: ______ | | | | |
 
 **Incidentes, incertidumbre de t₀, datos faltantes e interpretación:** ____________________
 
-# Anexo para el instructor
-
-## A. Preparar antes de los equipos
-
-Preparar los cuatro medios y verificar las dos sondas con anticipación. La llegada del nitrógeno no debe ser parte del tiempo de 45 minutos. Probar burbujeo, mezcla, temperatura y adquisición. Tener etiquetas, fichas, calculadora y acceso al registro exportado. Confirmar que las salidas automáticas estén en un estado seguro.
-
-Los participantes deben identificar las sondas por sí mismos. Dejar accesibles las etiquetas y documentos existentes; no proporcionarles un modelo supuesto. Si no es posible identificar la tecnología, el informe puede quedar con “no disponible”, pero debe conservar un ID que permita reconocer la sonda ensayada.
-
-Los buffers **pH 8 y pH 3** corresponden al montaje confirmado para el taller. No están confirmados los valores nominales de los buffers del piloto. La lectura histórica no demuestra por sí sola qué buffer se usó.
-
-## B. Qué contiene el archivo del 14 de octubre de 2026
-
-`B2 Respuesta electrodos.xlsx` contiene las hojas **pH** y **OD**, con registros independientes. No sumar sus tiempos ni asumir continuidad entre ellas. La hoja pH abarca unos 142 min y la hoja OD unos 19 min. El intervalo mediano es aproximadamente **1.01 s**.
-
-![Registros completos de las hojas pH y OD del piloto; cada eje temporal comienza en su propia hoja](../figuras/02_piloto_completo.png)
-
-Se utiliza `ProcessTime`, expresado originalmente en horas, para reconstruir el tiempo transcurrido con resolución subsegundo. Hay marcas de reloj repetidas al final de las hojas. En pH también hay 15 filas con señales faltantes, cinco puntos con ambas señales en cero y un intervalo de unos 17 s sin muestreo; los ceros simultáneos se marcan como posibles artefactos y no se interpretan como transferencias. Los originales se conservan en el Excel.
-
-El archivo no registra eventos de inmersión, gases, agitación, temperatura de los vasos, identidad de buffers ni modelo/serie de sondas. El setpoint de pH que aparece en la hoja pH no identifica la solución del vaso. Por eso **no permite obtener tiempos intrínsecos certificados** ni verificar todo el procedimiento propuesto.
-
-## C. Qué tramos son útiles y cuáles no
-
-| Tramo observado | Lectura de los datos | Uso en la enseñanza |
-|---|---|---|
-| pH, primer descenso (aprox. 95–160 s) | Cambio en varias etapas antes de acercarse a pH 3.3. | Mostrar por qué una transferencia o entrada mal definida impide fijar un t₀ confiable. |
-| pH, segundo descenso (aprox. 1204 s) | Lectura de alrededor de 6.89 hacia 3.47, con una cola lenta. | Ejemplo exploratorio de t₉₀ y estabilización, declarando el inicio inferido. |
-| pH, ascensos y registro prolongado | Recuperación lenta y deriva; la señal acaba cerca de 7.9 mucho después. | Discutir arrastre, acondicionamiento, cambios de medio y temperatura como posibilidades, no diagnósticos demostrados. |
-| OD, antes de aprox. 836 s | Descensos lentos y variaciones con condiciones de entrada desconocidas. | No atribuirlos automáticamente al tiempo de la sonda ni a un ensayo aire → N₂ bien ejecutado. |
-| OD, transición final ascendente | Paso rápido de alrededor de 12.6 a 77.2 % de saturación, con oscilación posterior. | Es el ejemplo más claro para visualizar una respuesta rápida; compatible con pasar de un medio de O₂ bajo a otro mayor. |
-
-Según el relato de la sesión, el N₂ solo estuvo disponible al final. Esto ayuda a contextualizar el ensayo, pero el archivo **no marca el momento de su uso**. La transición final es ascendente: no presentarla como un descenso aire → N₂ ni como una medición independiente de los dos sentidos.
-
-![Hoja OD: intentos previos y transición final; el inicio señalado se infirió de la señal](../figuras/04_OD_intentos.png)
-
-## D. Ejemplos cuantitativos exploratorios
-
-Los inicios de esta tabla se **infieren de las curvas**, no de una marca de transferencia. Se fijaron en 1204.15 s para el segundo descenso de pH y 836.25 s para el cambio final de OD, medidos desde el inicio de cada hoja. Los decimales localizan la muestra usada: no representan exactitud del evento físico.
-
-![Ventanas seleccionadas del piloto con banda final y t90 aparente](../figuras/03_piloto_ventanas.png)
-
-| Ventana ilustrativa | Lectura inicial → final | t₉₀ aparente [s] | t₁₀–₉₀ [s] | Estabilización aparente [s] |
-|---|---|---|---|---|
-| pH, segundo descenso | 6.89 → 3.47 | 50.8 | 50.6 | 149.2 |
-| OD, cambio final ascendente | 12.64 → 77.22 % | 8.3 | 7.0 | 40.5 |
-
-La estimación usa medianas en ventanas especificadas en `ventanas_piloto.json` para reducir la influencia de valores aislados; el cálculo manual del taller usa promedios de mesetas. Los cruces se interpolan linealmente sin filtrar la señal. La banda es ±5 % del cambio y se exige al menos 30 s dentro de ella y permanencia hasta el final de la ventana. Ver las ventanas, calidad y métricas completas en `resultados/piloto.json`.
-
-Estos números dependen del origen inferido, de los niveles elegidos y de la duración de observación. **No son metas que los equipos deban reproducir.** En particular, el descenso lento previo de OD no es una segunda medición válida de la respuesta inversa. Un registro nuevo con t₀ marcado y medios preparados es el resultado principal del taller.
-
-## E. Cómo evitar los problemas del piloto
-
-| Si ocurre esto | Qué revisar o hacer |
-|---|---|
-| El medio con N₂ sigue bajando | Prepararlo antes y comprobar meseta; no medir la respuesta mientras el vaso se desoxigena. Si no se logra, declarar montaje no preparado. |
-| El nivel bajo de O₂ queda lejos de cero | Revisar purga, entrada de aire, burbujas, calibración y tiempo de preparación. No forzar el cero ni recalibrar a mitad del ensayo para “corregir” la curva. |
-| La señal cambia por etapas | Revisar tránsito, contacto con otros líquidos, profundidad y burbujas; marcar incidentes. No elegir retrospectivamente el comienzo más conveniente. |
-| El pH deriva sin meseta | Revisar temperatura, buffer, arrastre, hidratación y referencia con el manual de la sonda. No sustituir una meseta ausente por el último dato. |
-| La respuesta parece instantánea | Comprobar intervalo de adquisición y filtrado. Si ocurre entre dos muestras, reportar que no se resuelve con ese registro. |
-| t₉₀ se alcanza, pero la lectura sigue oscilando | Separar cruce del 90 % y estabilización. Revisar mezcla y burbujas; no suavizar retrospectivamente para conseguir una cifra menor. |
-| Falta el modelo o el manual | Conservar ID temporal, condiciones y “no disponible”. Comparar sistemas tal como se ensayaron sin exigir un tiempo de ficha técnica. |
-
-Si no se consiguen las condiciones de O₂, usar el registro histórico como análisis de datos y declarar que no hubo una medición nueva válida. No presentar un cambio de gas en un solo vaso como equivalente al protocolo de transferencia.
-
-# Nota final: qué tiempo estamos midiendo
+# Alcance del tiempo de respuesta medido
 
 El resultado incluye la **sonda, la película de líquido junto a ella, el procedimiento de transferencia y la adquisición/filtrado de Biostat**. Es un tiempo de respuesta observado del sistema de medición en las condiciones registradas. Una comparación con un fabricante requiere identificar modelo, tecnología, definición del tiempo (t₉₀, t₉₈, etc.), temperatura y condiciones de su ensayo.
 

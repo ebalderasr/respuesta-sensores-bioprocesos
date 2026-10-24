@@ -95,7 +95,7 @@ def guardar(fig, nombre):
 
 def esquema():
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.1))
-    for ax, labels, color in [(axes[0], ['Buffer A\npH 8', 'Buffer B\npH 3'], AZUL),
+    for ax, labels, color in [(axes[0], ['Buffer A\npH 3', 'Buffer B\npH 10'], AZUL),
                                (axes[1], ['Agua + aire\nO₂ alto', 'Agua + N₂\nO₂ bajo'], NARANJA)]:
         for x, label in zip([.12,.64], labels):
             ax.plot([x,x,x+.23,x+.23], [.7,.15,.15,.7], color=GRIS, lw=2)

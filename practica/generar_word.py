@@ -27,7 +27,7 @@ MD = AQUI / "Practica_respuesta_sensores.md"
 SALIDA = AQUI / "Practica_respuesta_sensores.docx"
 PLANTILLA = AQUI.parent / "plantilla_documento.docx"
 
-AUTOR = "Emiliano Balderas · Instituto de Biotecnología, UNAM"
+AUTOR = "Octavio T. Ramírez · Emiliano Balderas · Instituto de Biotecnología, UNAM"
 
 MORADO = RGBColor(0x4E, 0x28, 0x91)
 MAGENTA = RGBColor(0xBD, 0x28, 0x74)
@@ -239,6 +239,8 @@ def tablas(doc):
 
 def figuras(doc, ancho_cm=14):
     for forma in doc.inline_shapes:
+        if forma._inline.docPr.get("descr", "") in ("Sonda de oxígeno disuelto", "Electrodo de pH"):
+            continue
         proporcion = forma.height / forma.width
         ancho = 12.5 if proporcion > 1.2 else ancho_cm
         forma.width = Cm(ancho)
@@ -271,10 +273,10 @@ def presentacion(doc):
                     p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
 
-def main():
-    subprocess.run(["pandoc", str(MD), "-f", "markdown+tex_math_dollars", "-o", str(SALIDA),
+def generar(md, salida):
+    subprocess.run(["pandoc", str(md), "-f", "markdown+tex_math_dollars", "-o", str(salida),
                     f"--resource-path={AQUI}:{AQUI.parent}"], check=True)
-    doc = Document(SALIDA)
+    doc = Document(salida)
     plantilla = Document(PLANTILLA)
     pagina(doc, plantilla)
     estilos(doc)
@@ -283,8 +285,21 @@ def main():
     figuras(doc)
     saltos_de_pagina(doc)
     presentacion(doc)
-    doc.save(SALIDA)
-    print(f"Listo: {SALIDA}")
+    doc.save(salida)
+    print(f"Listo: {salida}")
+
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Genera la guía de participantes y el anexo del instructor.")
+    parser.add_argument("--pdf", action="store_true", help="Exporta también los dos PDF con LibreOffice.")
+    args = parser.parse_args()
+    documentos = [(MD, SALIDA), (AQUI / "Anexo_instructor.md", AQUI / "Anexo_instructor.docx")]
+    for md, salida in documentos:
+        generar(md, salida)
+    if args.pdf:
+        subprocess.run(["libreoffice", "--headless", "--convert-to", "pdf", "--outdir", str(AQUI),
+                        *(str(salida) for _, salida in documentos)], check=True)
 
 
 if __name__ == "__main__":

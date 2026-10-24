@@ -92,16 +92,15 @@ La estabilización es la primera muestra dentro de **±5 % de |yf − y0|** que 
 
 ## Actualizar la guía, Word y PDF
 
-Editar el Markdown y después generar Word con Pandoc instalado:
+Editar los Markdown de la guía y de `practica/Anexo_instructor.md`. El generador produce ambos Word; con `--pdf` exporta también ambos PDF mediante LibreOffice:
 
 ```bash
-python practica/generar_word.py
-libreoffice --headless --convert-to pdf --outdir practica practica/Practica_respuesta_sensores.docx
+python practica/generar_word.py --pdf
 ```
 
 El generador usa la plantilla, mantiene texto justificado y centra ecuaciones y figuras. Sobrescribe el Word; incorporar primero cualquier edición manual a la fuente. Si se actualizan datos, regenerar figuras antes del documento. Si cambian ventanas o criterios, revisar también las cifras y el texto del anexo.
 
-Revisar visualmente el PDF: legibilidad de ecuaciones y etiquetas, tablas, saltos de página y espacio para completar las fichas. Comprobar que los cuatro sentidos de transferencia, los buffers **pH 8 y pH 3** y el registro de identificación sigan presentes.
+Revisar visualmente el PDF: legibilidad de ecuaciones y etiquetas, tablas, saltos de página y espacio para completar las fichas. Comprobar que los cuatro sentidos de transferencia, los buffers **pH 3 y pH 10** y el registro de identificación sigan presentes.
 
 ## Criterios para mantener el material
 
