@@ -13,11 +13,101 @@ autor: "Octavio T. Ramírez · Emiliano Balderas · Instituto de Biotecnología,
 
 En un cultivo, el pH y el oxígeno disuelto influyen en el entorno de las células. Para conocerlos usamos sensores, pero su lectura no cambia de manera instantánea cuando cambia el medio. La sonda necesita tiempo para responder y el equipo puede añadir procesamiento o filtrado a la señal.
 
-Imagina que el oxígeno disminuye rápidamente: durante unos segundos, la pantalla podría mostrar un valor cercano al anterior. Si interpretamos esa lectura como si fuera instantánea, podemos reaccionar tarde o confundir el retraso de la medición con la dinámica del cultivo. Conocer la rapidez del sistema de medición ayuda a interpretar los datos y a tomar mejores decisiones de operación y control.
-
 **Calibrar y medir el tiempo de respuesta son tareas distintas.** La calibración relaciona la señal con valores conocidos. La prueba de respuesta observa cuánto tarda la lectura en reflejar un cambio. Una sonda puede estar calibrada y responder lentamente.
 
-# 2. Condiciones de ensayo y variables registradas
+# 2. Conceptos fundamentales
+
+## 2.1. Tiempo de respuesta
+
+El tiempo de respuesta es el intervalo que necesita un sensor para registrar un cambio de una variable hasta alcanzar un porcentaje especificado de su cambio total.
+
+En instrumentación de procesos se utiliza habitualmente el tiempo de respuesta del 90 %, t₉₀, definido como el tiempo que tarda la lectura en completar el 90 % del cambio entre su valor inicial y su valor final.
+
+![Respuesta a un cambio escalonado (súbito) de la variable medida. Respuesta dinámica ilustrativa normalizada de primer orden tras un cambio tipo escalón.](../figuras/01_respuesta_didactica.png)
+
+Si el cambio total es de 0 a 100 %, el t₉₀ es el tiempo en que la lectura llega a 90 % del cambio total. La curva es ilustrativa y no representa datos de un electrodo específico.
+
+Para cualquier variable X, la respuesta normalizada puede expresarse como:
+
+$$R(t)=\frac{X(t)-X_0}{X_f-X_0}\times100$$
+
+Donde:
+
+- $X_0$: lectura inicial estable.
+- $X_f$: lectura final estable.
+- $X(t)$: lectura en el instante t.
+
+El tiempo de respuesta t₉₀ corresponde al primer instante en que $R(t)=90\,\%$.
+
+Esta definición funciona tanto para aumentos como para disminuciones, siempre que el cambio total sea distinto de cero.
+
+## 2.2. Modelo de primer orden
+
+Muchos sensores pueden aproximarse mediante un modelo de primer orden:
+
+$$X(t)=X_f+(X_0-X_f)e^{-t/\tau}$$
+
+Donde τ es la constante de tiempo del sensor. En esta expresión, t es el tiempo transcurrido desde el cambio, con t = 0 al completar la inmersión en el medio de destino; se supone una respuesta sin retraso puro.
+
+Para este modelo:
+
+$$t_{90}=2.303\,\tau$$
+
+También se cumple aproximadamente:
+
+- $t_{63.2}=\tau$.
+- $t_{90}=2.303\,\tau$.
+- $t_{95}\approx3\,\tau$.
+- $t_{99}\approx4.605\,\tau$.
+
+Estas relaciones son válidas para una respuesta exponencial de primer orden. Los sensores reales pueden presentar retrasos, múltiples constantes de tiempo o limitaciones por el sistema de adquisición.
+
+### Constante de tiempo y origen del 63.2 %
+
+El modelo corresponde a la ecuación diferencial $\tau\,dX/dt+X=X_f$, de primer orden porque contiene la primera derivada de la lectura respecto al tiempo. τ tiene unidades de tiempo; una τ menor indica una respuesta más rápida.
+
+Al sustituir la solución exponencial en la respuesta normalizada:
+
+$$R(t)=\left(1-e^{-t/\tau}\right)\times100$$
+
+Cuando t = τ, el exponente vale −1 y se obtiene:
+
+$$R(\tau)=\left(1-e^{-1}\right)\times100\approx63.2\,\%$$
+
+El 63.2 % corresponde al recorrido entre la lectura inicial y final, no necesariamente a una lectura de 63.2 % de saturación. Si existe un retraso puro L, el tiempo al 63.2 % contado desde la inmersión es aproximadamente $L+\tau$ y el t₉₀ es $L+2.303\,\tau$. En ese caso no se obtiene τ dividiendo directamente el t₉₀ observado entre 2.303.
+
+# 3. Diferencias entre los sensores de oxígeno disuelto y pH
+
+## Sensor de oxígeno disuelto
+
+Mide la concentración de oxígeno o el porcentaje de saturación. Los sensores ópticos utilizan luminiscencia, mientras que los electroquímicos consumen oxígeno en su superficie. La respuesta depende del diseño, la membrana cuando existe, la temperatura, el movimiento del líquido y el estado del sensor.
+
+## Electrodo de pH
+
+Es habitualmente un electrodo combinado de vidrio con referencia. Su respuesta depende de la hidratación de la membrana de vidrio, el estado de la unión de referencia, la temperatura, la composición de la solución y el equipo de medición.
+
+Una distinción esencial para el curso es que el tiempo observado al cambiar una sonda de recipiente incluye no solo la respuesta del sensor, sino también el tiempo de transferencia, la mezcla local y la frecuencia de adquisición. En esta práctica se medirá el tiempo de respuesta operacional del conjunto sonda–transmisor, que es el más relevante para el usuario del biorreactor.
+
+![Sonda de oxígeno disuelto](../figuras/sensor_OD_OTR.jpeg){width=6cm} ![Electrodo de pH](../figuras/sensor_pH_OTR.jpeg){width=6cm}
+
+Sonda de oxígeno disuelto (izquierda) y electrodo de pH (derecha). Imágenes de la versión de OTR; se muestran como referencia de los sensores, sin identificar los utilizados en el taller.
+
+# 4. Objetivo y organización
+
+Al finalizar, los participantes podrán definir t₉₀ y τ, explicar el origen del 63.2 % en un modelo de primer orden, distinguir la respuesta de la sonda de la del sistema completo y relacionar una lectura lenta con el control del cultivo.
+
+**Objetivo:** identificar las sondas utilizadas y determinar t₁₀, t₉₀ y el tiempo de estabilización de las lecturas de pH y O₂, en ambos sentidos de transferencia. Comparar los resultados considerando temperatura, agitación, registro y condiciones de cada ensayo.
+
+Cada uno de los tres equipos realiza las dos pruebas. Al cambiar de sensor, intercambiar los roles para que todos participen en la operación y el análisis. Las seis personas se reparten estos roles:
+
+1. **Identificación y trazabilidad:** lee etiquetas y llena la ficha de sensores, soluciones y condiciones.
+2. **Operación:** transfiere la sonda con ayuda del instructor, sin desconectarla.
+3. **Tiempo:** marca cada inmersión y registra la hora exacta de t₀.
+4. **Adquisición:** comprueba el registro digital, la señal y las unidades; respalda las observaciones manuales.
+5. **Gráfica y cálculo:** localiza niveles inicial/final y cruces del 10 y 90 %.
+6. **Verificación y comparación:** revisa las cuentas, la permanencia en banda y la tabla de resultados.
+
+## Condiciones de ensayo y variables registradas
 
 Mantendremos dos ambientes preparados y moveremos la sonda rápidamente de uno a otro. La transferencia debe ser breve, pero cuidadosa: “de golpe” significa cambiar el medio en poco tiempo, no golpear el sensor.
 
@@ -26,27 +116,9 @@ Mantendremos dos ambientes preparados y moveremos la sonda rápidamente de uno a
 | pH | Buffer **pH 3 → pH 10**, después **pH 10 → pH 3** | pH indicado por Biostat |
 | Oxígeno disuelto (O₂, OD o pO₂) | Agua equilibrada con **aire → agua con N₂**, después el sentido inverso | Oxígeno en % de saturación indicado por Biostat |
 
-En pH medimos la respuesta de un electrodo. En oxígeno puede haber una sonda electroquímica u óptica: **primero registraremos su identificación y no supondremos su tecnología**. Biostat es el equipo que recibe y muestra la señal; no necesariamente es el fabricante de la sonda.
+En pH medimos la respuesta de un electrodo. En oxígeno registraremos la identificación de la sonda sin suponer su tecnología. Biostat es el equipo que recibe y muestra la señal; no necesariamente es el fabricante de la sonda.
 
-## Principios de medición y factores de respuesta
-
-El electrodo de pH es habitualmente un electrodo combinado de vidrio con referencia. Su respuesta depende de la hidratación de la membrana de vidrio, del estado de la unión de referencia, de la temperatura y de la composición de la solución. Los sensores ópticos de O₂ usan luminiscencia; los electroquímicos consumen oxígeno en su superficie. Su respuesta depende del diseño, de la membrana cuando existe, de la temperatura, del movimiento del líquido y del estado del sensor.
-
-| Aspecto | Sensor de O₂ | Electrodo de pH |
-|---|---|---|
-| Cambio aplicado | Entre medios con distinto contenido de O₂ | Entre buffers de distinto pH |
-| Factores de la respuesta | Sensor, transporte local de oxígeno y mezcla | Membrana de vidrio, referencia y acondicionamiento |
-| Consecuencia de una lectura lenta | Retraso en detectar caídas de O₂ y corregir aireación, agitación u oxígeno | Retraso en detectar cambios de pH y corregir con ácido o base |
-
-La prueba caracteriza la respuesta operacional del sistema de medición: sonda, transmisor y adquisición bajo las condiciones del ensayo. La transferencia y la mezcla local también pueden afectar la curva observada. No se requieren células para realizarla.
-
-![Sonda de oxígeno disuelto](../figuras/sensor_OD_OTR.jpeg){width=6cm} ![Electrodo de pH](../figuras/sensor_pH_OTR.jpeg){width=6cm}
-
-Sonda de oxígeno disuelto (izquierda) y electrodo de pH (derecha). Imágenes de la versión de OTR; se muestran como referencia de los sensores, sin identificar los utilizados en el taller.
-
-# 3. Parámetros de respuesta
-
-No siempre hay un instante único en que la señal “termina de cambiar”. Por eso acordaremos qué vamos a medir.
+## Parámetros adicionales del taller
 
 | Medida | Qué significa en esta práctica |
 |---|---|
@@ -56,11 +128,10 @@ No siempre hay un instante único en que la señal “termina de cambiar”. Por
 
 También calcularemos **t₁₀–₉₀ = t₉₀ − t₁₀**: cuánto tarda la parte central de la transición. Es útil para comparar curvas, pero no incluye todo el retraso desde la inmersión.
 
-![Cambio ideal del medio y ejemplo de respuesta gradual del sistema de medición](../figuras/01_respuesta_didactica.png)
-
-La figura es ilustrativa, no una medición de las sondas del taller. Para calcular los tiempos no necesitamos ajustar una ecuación exponencial ni resolver derivadas.
-
 ## Cálculo de los umbrales de respuesta
+
+En los cálculos y las hojas de datos, y₀, y_f e y(t) representan las mismas lecturas que X₀, Xf y X(t) en las ecuaciones anteriores.
+
 
 Llamaremos **y₀** a la lectura estable antes de transferir, **y_f** a la lectura final estable y **t₀** al instante en que la parte sensible queda sumergida en el líquido de destino. El tiempo transcurrido se cuenta desde t₀, no desde que empieza a moverse la pantalla.
 
@@ -78,44 +149,8 @@ Para el 10 % se hace la misma cuenta sustituyendo 0.90 por 0.10. La resta $y_f-y
 
 El pH es una escala logarítmica. Aquí describimos el porcentaje del recorrido de la **lectura de pH**, no el porcentaje de cambio de la concentración de iones hidrógeno.
 
-## Modelo de primer orden y constante de tiempo
-
-Muchos sensores pueden aproximarse mediante un modelo de primer orden. Para un cambio súbito del medio y sin retraso puro, la ecuación es:
-
-$$\tau\,\frac{dy}{dt}+y=y_f,\qquad y(t_0)=y_0$$
-
-Es una ecuación diferencial de primer orden porque contiene la primera derivada de la lectura respecto al tiempo, $dy/dt$, y ninguna derivada de orden superior. La derivada expresa la rapidez con que cambia la lectura. La ecuación dice que esa rapidez es proporcional a lo que aún falta para llegar al valor final: $dy/dt=(y_f-y)/\tau$.
-
-τ (tau) es la constante de tiempo, con unidades de tiempo, por ejemplo segundos. Una τ menor corresponde a una respuesta más rápida. Si el medio permanece en su nuevo valor, la solución de esta ecuación es:
-
-$$y(t)=y_0+(y_f-y_0)\left[1-e^{-(t-t_0)/\tau}\right],\qquad t\geq t_0$$
-
-Aquí $e\approx2.71828$ es la base de la función exponencial. Para comparar ascensos y descensos, expresamos la respuesta como fracción del cambio total, siempre que $y_f\ne y_0$:
-
-$$r(t)=\frac{y(t)-y_0}{y_f-y_0}=1-e^{-(t-t_0)/\tau}$$
-
-Al transcurrir una constante de tiempo desde el cambio, $t-t_0=\tau$, el exponente vale −1:
-
-$$r(t_0+\tau)=1-e^{-1}=1-0.367879\ldots=0.632121\ldots\approx63.2\,\%$$
-
-Así, después de una τ se ha recorrido aproximadamente el 63.2 % del cambio y falta el 36.8 %. El nivel correspondiente en la gráfica es $y_{63.2}=y_0+0.632\,(y_f-y_0)$.
-
-Para saber cuánto tarda el modelo en completar cualquier fracción $p$ del cambio, despejamos el tiempo:
-
-$$p=1-e^{-t_p/\tau}\quad\Longrightarrow\quad t_p=-\tau\ln(1-p)$$
-
-En esta expresión, $t_p$ es el tiempo transcurrido desde t₀ y $\ln$ es el logaritmo natural. Para el 90 %, $p=0.90$ y queda $t_{90}=-\tau\ln(0.10)\approx2.303\,\tau$.
-
-| Porcentaje del cambio | Tiempo transcurrido en el modelo de primer orden |
-|---|---|
-| 63.2 % (aproximadamente) | τ |
-| 90 % | 2.303 τ |
-| 95 % | 2.996 τ ≈ 3 τ |
-| 99 % | 4.605 τ |
-
-Estas relaciones suponen una respuesta exponencial de primer orden. Una sonda real puede presentar retraso inicial, varias constantes de tiempo, oscilaciones o filtrado adicional. Si existe un retraso puro $L$ antes de comenzar la respuesta exponencial, los tiempos contados desde t₀ son $t_{63.2}\approx L+\tau$ y $t_{90}\approx L+2.303\,\tau$. Por ello, identificar el t₆₃.₂ observado con τ o calcular τ = t₉₀/2.303 requiere comprobar el modelo y el retraso. En el taller, t₉₀ se obtiene directamente de la curva; no se exige ajustar este modelo.
-
 ## Banda de estabilización
+
 
 Usaremos una banda de **±5 % del cambio total** alrededor de y_f:
 
@@ -124,21 +159,6 @@ $$b = 0.05\,|y_f-y_0|\qquad\text{banda: de }y_f-b\text{ a }y_f+b$$
 Las barras indican tomar el tamaño del cambio sin su signo. Para una lectura de pH de 3 a 10, b = 0.35 unidades y la banda es 9.65–10.35. Para oxígeno de 80 a 12 %, b = 3.4 puntos y la banda es 8.6–15.4 % de saturación.
 
 Esta banda es un criterio didáctico común para comparar ensayos; no es un criterio universal del fabricante. **Entrar una vez no basta:** si sale de la banda después, buscar una entrada posterior. Si no permanece dentro, escribir “no se estabilizó durante el tiempo observado”.
-
-# 4. Objetivo y organización
-
-Al finalizar, los participantes podrán definir t₉₀ y τ, explicar el origen del 63.2 % en un modelo de primer orden, distinguir la respuesta de la sonda de la del sistema completo y relacionar una lectura lenta con el control del cultivo.
-
-**Objetivo:** identificar las sondas utilizadas y determinar t₁₀, t₉₀ y el tiempo de estabilización de las lecturas de pH y O₂, en ambos sentidos de transferencia. Comparar los resultados considerando temperatura, agitación, registro y condiciones de cada ensayo.
-
-Cada uno de los tres equipos realiza las dos pruebas. Al cambiar de sensor, intercambiar los roles para que todos participen en la operación y el análisis. Las seis personas se reparten estos roles:
-
-1. **Identificación y trazabilidad:** lee etiquetas y llena la ficha de sensores, soluciones y condiciones.
-2. **Operación:** transfiere la sonda con ayuda del instructor, sin desconectarla.
-3. **Tiempo:** marca cada inmersión y registra la hora exacta de t₀.
-4. **Adquisición:** comprueba el registro digital, la señal y las unidades; respalda las observaciones manuales.
-5. **Gráfica y cálculo:** localiza niveles inicial/final y cruces del 10 y 90 %.
-6. **Verificación y comparación:** revisa las cuentas, la permanencia en banda y la tabla de resultados.
 
 # 5. Montaje y preparación
 

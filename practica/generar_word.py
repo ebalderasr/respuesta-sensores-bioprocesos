@@ -266,6 +266,9 @@ def presentacion(doc):
         if p.style.name == "Image Caption":
             p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p.paragraph_format.keep_with_next = False
+    for anterior, siguiente in zip(doc.paragraphs, doc.paragraphs[1:]):
+        if siguiente._p.xpath(".//m:oMathPara"):
+            anterior.paragraph_format.keep_with_next = True
     for t in doc.tables:
         for row in t.rows:
             for cell in row.cells:
